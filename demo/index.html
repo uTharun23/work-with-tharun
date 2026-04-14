@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tharun | Video Editor & Content Creator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-soft: #0d1322;
+      --card: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #eef2ff;
+      --muted: #b8c1d9;
+      --primary: #4f7cff;
+      --accent: #00d4ff;
+      --accent-2: #8b5cf6;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --max-width: 1180px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(79, 124, 255, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(0, 212, 255, 0.14), transparent 25%),
+        linear-gradient(180deg, #05070d 0%, #091120 100%);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 56px;
+      font-size: 1.05rem;
+    }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .floating-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(14px);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 180px;
+      height: 180px;
+      background: rgba(79, 124, 255, 0.22);
+      top: 120px;
+      left: -40px;
+    }
+
+    .orb-2 {
+      width: 220px;
+      height: 220px;
+      background: rgba(0, 212, 255, 0.15);
+      right: -60px;
+      top: 360px;
+      animation-delay: -2s;
+    }
+
+    .orb-3 {
+      width: 160px;
+      height: 160px;
+      background: rgba(139, 92, 246, 0.18);
+      left: 10%;
+      bottom: 40px;
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(79, 124, 255, 0.15); }
+      50% { box-shadow: 0 0 30px rgba(79, 124, 255, 0.28); }
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 11, 20, 0.55);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    header.hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 32px 0 80px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+      color: #dce6ff;
+      font-size: 0.95rem;
+    }
+
+    .eyebrow i {
+      color: var(--accent);
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 0.98;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(90deg, #ffffff 0%, #9fd4ff 40%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 170px;
+      padding: 15px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 640px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .stat-card p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .showcase-card {
+      padding: 18px;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.14), rgba(0, 212, 255, 0.08));
+      pointer-events: none;
+    }
+
+    .showcase-image {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      min-height: 520px;
+    }
+
+    .showcase-image img {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      filter: brightness(0.88);
+    }
+
+    .play-badge,
+    .floating-panel {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .play-badge {
+      left: 22px;
+      bottom: 22px;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .floating-panel {
+      right: -18px;
+      top: 32px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      max-width: 220px;
+    }
+
+    .floating-panel h4 {
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+    }
+
+    .floating-panel p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .profile-card {
+      padding: 24px;
+      border-radius: 28px;
+      text-align: center;
+    }
+
+    .profile-img {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(79, 124, 255, 0.45);
+      box-shadow: 0 0 40px rgba(79, 124, 255, 0.18);
+    }
+
+    .profile-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .profile-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .socials a {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .socials a:hover {
+      transform: translateY(-4px);
+      background: rgba(79, 124, 255, 0.18);
+    }
+
+    .about-content {
+      padding: 34px;
+      border-radius: 28px;
+    }
+
+    .about-content p {
+      color: var(--muted);
+      font-size: 1.04rem;
+      margin-bottom: 18px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .skill-tags span {
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #dce6ff;
+    }
+
+    .services-grid,
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      padding: 30px 24px;
+      border-radius: 24px;
+      text-align: left;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30% -60% auto;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79, 124, 255, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .service-card:hover,
+    .work-item:hover {
+      transform: translateY(-8px);
+      border-color: rgba(79, 124, 255, 0.34);
+    }
+
+    .service-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.2), rgba(0, 212, 255, 0.12));
+      color: #fff;
+    }
+
+    .service-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .portfolio-wrap {
+      padding: 34px;
+      border-radius: 30px;
+    }
+
+    .work-item {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 300px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .work-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .work-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .work-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 22px;
+      background: linear-gradient(to top, rgba(6, 10, 20, 0.92), rgba(6, 10, 20, 0.15));
+    }
+
+    .work-overlay h3 {
+      margin-bottom: 6px;
+      font-size: 1.14rem;
+    }
+
+    .work-overlay p {
+      color: #d3dbef;
+      font-size: 0.94rem;
+      max-width: 90%;
+    }
+
+    .contact-card {
+      padding: 42px 28px;
+      border-radius: 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(79, 124, 255, 0.12), transparent 55%);
+      pointer-events: none;
+    }
+
+    .contact-card h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin-bottom: 14px;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 26px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .contact-pill {
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #eaf1ff;
+      font-size: 0.96rem;
+    }
+
+    footer {
+      padding: 24px 0 40px;
+      text-align: center;
+      color: #8f9bb8;
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .about-grid,
+      .services-grid,
+      .work-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        text-align: center;
+      }
+
+      .hero p,
+      .section-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions,
+      .hero-stats {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .floating-panel {
+        right: 12px;
+        top: 12px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .section {
+        padding: 80px 0;
+      }
+
+      .showcase-image,
+      .showcase-image img {
+        height: 400px;
+        min-height: 400px;
+      }
+
+      .about-content,
+      .profile-card,
+      .portfolio-wrap,
+      .contact-card {
+        padding: 24px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-wrap">
+      <a href="#home" class="logo">Tharun<span>.</span></a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="container hero-grid">
+      <div class="hero reveal active">
+        <div class="eyebrow glass">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          Freelance Video Editor & Creative Storyteller
+        </div>
+        <h1>
+          I craft <span class="gradient">cinematic edits</span><br />
+          that grab attention.
+        </h1>
+        <p>
+          I help creators, brands, and businesses grow with high-impact Reels, Shorts,
+          YouTube edits, and engaging visual content that feels modern, sharp, and professional.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Hire Me</a>
+          <a href="#work" class="btn btn-secondary"><i class="fa-solid fa-play"></i> View Work</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card glass">
+            <h3>Reels</h3>
+            <p>Fast, trendy edits</p>
+          </div>
+          <div class="stat-card glass">
+            <h3>YouTube</h3>
+            <p>Story-driven videos</p>
+          </div>
+          <div class="stat-card glass">
+            <h3>Branding</h3>
+            <p>Visual content style</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="showcase-card glass">
+          <div class="showcase-image">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80" alt="Video editing workspace" />
+            <div class="play-badge glass">
+              <i class="fa-solid fa-play"></i>
+            </div>
+          </div>
+          <div class="floating-panel glass">
+            <h4>Creative Editing</h4>
+            <p>Smooth transitions, captions, pacing, and polished storytelling for social media.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="about">
+    <div class="floating-orb orb-3"></div>
+    <div class="container">
+      <h2 class="section-title reveal">About Me</h2>
+      <p class="section-subtitle reveal">
+        A creative editor focused on making every video feel premium, engaging, and memorable.
+      </p>
+
+      <div class="about-grid">
+        <div class="profile-card glass reveal">
+          <img src="profile.jpg.jpeg" alt="Tharun" class="profile-img" />
+          <h3>Tharun</h3>
+          <p>Video Editor & Content Creator</p>
+          <div class="socials">
+            <a href="https://instagram.com/__tharun._.23" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@VibeWithTharun" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="mailto:tharunummadala@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            <a href="#contact" aria-label="Contact"><i class="fa-solid fa-phone"></i></a>
+          </div>
+        </div>
+
+        <div class="about-content glass reveal">
+          <p>
+            I create dynamic short-form and long-form videos designed to hold attention and improve audience engagement.
+            From social media reels to polished YouTube content, I focus on visuals that look modern and feel impactful.
+          </p>
+          <p>
+            My editing style combines clean cuts, cinematic pacing, text animation, music sync, and strong visual flow.
+            The goal is simple: make content look premium and help clients stand out.
+          </p>
+          <div class="skill-tags">
+            <span>Reels Editing</span>
+            <span>YouTube Videos</span>
+            <span>Short-form Content</span>
+            <span>Motion Graphics</span>
+            <span>Thumbnails</span>
+            <span>Creative Storytelling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="section-title reveal">Services</h2>
+      <p class="section-subtitle reveal">
+        Professional editing solutions for creators, influencers, and brands.
+      </p>
+
+      <div class="services-grid">
+        <div class="service-card glass reveal">
+          <div class="service-icon"><i class="fa-solid fa-clapperboard"></i></div>
+          <h3>Reels & Shorts Editing</h3>
+          <p>
+            Trend-focused vertical videos with strong hooks, subtitles, music sync, and fast-paced edits made for engagement.
+          </p>
+        </div>
+
+        <div class="service-card glass reveal">
+          <div class="service-icon"><i class="fa-solid fa-film"></i></div>
+          <h3>YouTube Video Editing</h3>
+          <p>
+            Long-form content with clean storytelling, smooth transitions, pacing, and cinematic polish for a professional look.
+          </p>
+        </div>
+
+        <div class="service-card glass reveal">
+          <div class="service-icon"><i class="fa-solid fa-wand-magic"></i></div>
+          <h3>Thumbnails & Motion Design</h3>
+          <p>
+            Eye-catching thumbnails, simple graphics, and motion design elements that improve click-through and branding.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="container">
+      <h2 class="section-title reveal">Latest Work</h2>
+      <p class="section-subtitle reveal">
+        A preview of the kind of visual content I can create for social media and digital brands.
+      </p>
+
+      <div class="portfolio-wrap glass reveal">
+        <div class="work-grid">
+          <a class="work-item" href="https://instagram.com/__tharun._.23" target="_blank">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Short-form content editing" />
+            <div class="work-overlay">
+              <h3>Short-form Reels</h3>
+              <p>Fast, engaging edits made for reach, retention, and strong first impressions.</p>
+            </div>
+          </a>
+
+          <a class="work-item" href="https://instagram.com/__tharun._.23" target="_blank">
+            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80" alt="Video production setup" />
+            <div class="work-overlay">
+              <h3>Cinematic Videos</h3>
+              <p>Professional visuals with mood, rhythm, cinematic pacing, and polished storytelling.</p>
+            </div>
+          </a>
+
+          <a class="work-item" href="https://www.youtube.com/@VibeWithTharun" target="_blank">
+            <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=900&q=80" alt="Thumbnail and creator branding" />
+            <div class="work-overlay">
+              <h3>Creator Branding</h3>
+              <p>Social visuals, thumbnails, and branded editing style. Click to view my YouTube channel.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-card glass reveal">
+        <h2>Let’s Create Something Amazing</h2>
+        <p>
+          Ready to make your content look more professional and engaging? Let’s work together.
+        </p>
+
+        <div class="contact-links">
+          <a class="contact-pill" href="mailto:tharunummadala@gmail.com">
+            <i class="fa-solid fa-envelope"></i> tharunummadala@gmail.com
+          </a>
+          <a class="contact-pill" href="https://instagram.com/__tharun._.23" target="_blank">
+            <i class="fa-brands fa-instagram"></i> @__tharun._.23
+          </a>
+          <a class="contact-pill" href="https://www.youtube.com/@VibeWithTharun" target="_blank">
+            <i class="fa-brands fa-youtube"></i> @VibeWithTharun
+          </a>
+        </div>
+
+        <a href="mailto:tharunummadala@gmail.com" class="btn btn-primary">
+          <i class="fa-solid fa-briefcase"></i> Work With Me
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Tharun • Freelance Video Editor & Content Creator
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach((item) => observer.observe(item));
+  </script>
+</body>
+</html>
